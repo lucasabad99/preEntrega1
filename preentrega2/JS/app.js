@@ -61,7 +61,7 @@ while(true){
             }      
         })
         alert("Este es el producto seleccionado: " + totalCompra);
-        const salir = parseInt(prompt("Apriete cualquier tecla para seguir comprando.Para finalizar compra apriete 0"));
+        const salir = parseInt(prompt("Ingrese cualquier tecla para seguir comprando.Para finalizar compra apriete 0"));
         if(salir === 0){
             alert("Este es el ticket final:" + tickettotal);
             break;
