@@ -1,0 +1,90 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%; /* Ocupa toda la altura del viewport */
+    background: linear-gradient(to bottom,#ffc27f,#ffe29a );
+
+}
+/*div{
+    display: grid;
+    min-width: 30dvh;
+    grid-template-rows: auto 1fr auto;   
+    background: linear-gradient(to bottom,#ac4147,#f88863,#ffc27f );
+}*/
+header{
+    height: 10%;
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    align-items: center;
+    border: 2px solid black;
+}
+main {
+    
+    height: 80%;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    align-items: flex-start;
+    border: 2px solid black;
+    padding: 10px 0; /* Rellena el espacio en lugar de márgenes */
+    margin: 0; /* Asegura que no hay márgenes */
+    
+    
+}
+
+footer{
+    height: 10%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    border: 2px solid black;
+}
+h2{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+
+.cards{
+    display: flex;
+    justify-content: start;
+    flex-direction: row;
+    align-items: center;
+}
+
+
+.tarjetasContador {
+ display: flex;
+ flex-wrap:wrap; /*ESTO SIRVE PARA TRABAJAR CON FILAS*/
+ justify-content: space-between;
+ align-items: center;
+ flex-direction: row;
+ gap: 10px;
+}
+
+.cardAppend{
+ width: 18rem;
+ margin: 0 auto;
+}
+
+.cardAppend .card{
+    background-color: #ac4147;
+    color: white;
+}
+.bi-cart {
+    font-size: 2rem; /* Cambia el tamaño del ícono */
+    color: #007bff; /* Cambia el color del ícono */
+}
+
+
+
+
+
