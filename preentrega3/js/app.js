@@ -12,7 +12,8 @@ const productos = [
   { id: 11, nombre: "Sabuza", precio: 19000, cantidad: 15 },
   { id: 12, nombre: "Sapito", precio: 19000, cantidad: 15 },
 ];
-
+//localStorage.removeItem("carritoLucas");
+//localStorage.removeItem("productosLucas");
 // Guardar productos en localStorage
 const guardarLocal = (clave, valor) => {
   localStorage.setItem(clave, JSON.stringify(valor));
@@ -93,6 +94,22 @@ function agregarEventosCompra() {
 }
 // Renderizar las tarjetas
 cardAppend(productosGuardados);
+
+
+
+
+
+
+
+
+   
+
+
+
+
+        
+
+
 
 
 
