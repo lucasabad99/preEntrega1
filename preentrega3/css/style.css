@@ -7,7 +7,7 @@ html, body {
     margin: 0;
     padding: 0;
     height: 100%; /* Ocupa toda la altura del viewport */
-    background: linear-gradient(to bottom,#ffc27f,#ffe29a );
+    background: linear-gradient(to bottom,#61349f,#4e278e, #3a1a7c);
 
 }
 /*div{
@@ -76,7 +76,7 @@ h2{
 }
 
 .cardAppend .card{
-    background-color: #ac4147;
+    background: linear-gradient(to bottom,#270d6b,#130059);
     color: white;
 }
 .bi-cart {
