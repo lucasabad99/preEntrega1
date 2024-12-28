@@ -28,28 +28,32 @@ let productosGuardados = cargarProductos();
 
 
 
-// Crear las tarjetas
 function cardAppend(productos) { 
   let contenedor = document.getElementById("contenedor");
   contenedor.classList.add("tarjetasContador");
   contenedor.innerHTML = ""; // Limpiar contenedor para evitar duplicados
-  productos.forEach((el) => { 
+
+  // Iteramos sobre cada elemento del arreglo 'productos' y desestructuramos las propiedades directamente
+  productos.forEach(({ nombre, precio, cantidad, id }) => { 
+    // Ahora 'nombre', 'precio', 'cantidad' e 'id' son variables individuales
     let card = document.createElement("div");
     card.classList.add("cardAppend");
     card.innerHTML = `
       <div class="card">
         <div class="card-body">
-          <h5 class="card-title">${el.nombre}</h5>
-          <p class="card-text">Precio: $${el.precio}</p>
-          <p class="card-text cantidad" data-id="${el.id}">Cantidad: ${el.cantidad}</p>
-          <button class="btn btn-primary comprar" data-id="${el.id}">Agregar al carrito</button>
+          <h5 class="card-title">${nombre}</h5> <!-- Usamos directamente 'nombre' -->
+          <p class="card-text">Precio: $${precio}</p> <!-- Usamos directamente 'precio' -->
+          <p class="card-text cantidad" data-id="${id}">Cantidad: ${cantidad}</p> <!-- Usamos directamente 'cantidad' -->
+          <button class="btn btn-primary comprar" data-id="${id}">Agregar al carrito</button>
         </div>
       </div>
     `;
     contenedor.appendChild(card);
   });
-  agregarEventosCompra();
+
+  agregarEventosCompra(); // Función para agregar eventos a los botones
 }
+
 
 
 
@@ -67,31 +71,53 @@ carrito = cargarCarrito();
 
 
 
-//En esta funcion se agrega al carrito y se resta del stock
 function agregarEventosCompra() {
   const botones = document.querySelectorAll(".comprar");
+
   botones.forEach((boton) => {
     boton.addEventListener("click", (e) => {
       const idProducto = parseInt(e.target.dataset.id);
+
+      // Usamos desestructuración al encontrar el producto
       const producto = productosGuardados.find((p) => p.id === idProducto);
       if (producto && producto.cantidad > 0) {
-        producto.cantidad -= 1;
-        const cantidadElement = document.querySelector(`.cantidad[data-id="${idProducto}"]`);
-        cantidadElement.textContent = `Cantidad: ${producto.cantidad}`;
+        // Desestructuramos las propiedades necesarias
+        let { cantidad, id, nombre, precio } = producto;
+
+        // Restamos del stock
+        cantidad -= 1;
+        const cantidadElement = document.querySelector(`.cantidad[data-id="${id}"]`);
+        cantidadElement.textContent = `Cantidad: ${cantidad}`;
+
+        // Actualizamos el producto original en el array
+        producto.cantidad = cantidad;
         guardarLocal("productosLucas", productosGuardados);
-        const productoEnCarrito = carrito.find((p) => p.id === idProducto);
+
+        // Encontramos el producto en el carrito (si existe)
+        const productoEnCarrito = carrito.find((p) => p.id === id);
         if (productoEnCarrito) {
+          // Incrementamos la cantidad del producto en el carrito
           productoEnCarrito.cantidad += 1;
         } else {
-          carrito.push({ ...producto, cantidad: 1 });
+          // Si no existe en el carrito, lo agregamos con desestructuración
+          carrito.push({ id, nombre, precio, cantidad: 1 });
         }
+
+        // Guardamos el carrito actualizado
         guardarLocal("carritoLucas", carrito);
       } else {
-        alert("Stock agotado");
+        // Reemplazamos el alert por SweetAlert
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Stock agotado',
+        });
       }
     });
   });
 }
+
+
 // Renderizar las tarjetas
 cardAppend(productosGuardados);
 
