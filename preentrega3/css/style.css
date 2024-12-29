@@ -1,4 +1,4 @@
-*{
+* {
     margin: 0;
     padding: 0;
 }
@@ -6,17 +6,11 @@
 html, body {
     margin: 0;
     padding: 0;
-    height: 100%; /* Ocupa toda la altura del viewport */
-    background: linear-gradient(to bottom,#61349f,#4e278e, #3a1a7c);
-
+    height: 100%;
+    background: linear-gradient(to left, #61349f, #4e278e, #3a1a7c);
 }
-/*div{
-    display: grid;
-    min-width: 30dvh;
-    grid-template-rows: auto 1fr auto;   
-    background: linear-gradient(to bottom,#ac4147,#f88863,#ffc27f );
-}*/
-header{
+
+header {
     height: 10%;
     display: flex;
     justify-content: center;
@@ -24,76 +18,83 @@ header{
     align-items: center;
     border: 2px solid black;
 }
+
 main {
-    
     height: 100%;
     display: flex;
     flex-direction: column;
     text-align: center;
-    align-items: flex-start;
-    /*border: 2px solid black;*/
-    padding: 10px 0; /* Rellena el espacio en lugar de márgenes */
-    margin: 0; /* Asegura que no hay márgenes */   
+    align-items: center;   
 }
 
-footer{
+footer {
     height: auto;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    /*border: 2px solid black;*/
     text-align: center;
     padding: 10px;
-    margin-top: 10px; /* Espacio entre el footer y el main */
-    
-
+    margin-top: 10px;
+    color: antiquewhite;
 }
-h2{
+
+header h1 {  
+    color: antiquewhite;
+}
+
+main h2 {
     display: flex;
     justify-content: center;
     flex-direction: column;
     align-items: center;
+    color: antiquewhite;
 }
 
-.cards{
+.cards {
     display: flex;
     justify-content: center;
     flex-direction: row;
     align-items: center;
 }
 
-
 .tarjetasContador {
- display: flex;
- flex-wrap:wrap; /*ESTO SIRVE PARA TRABAJAR CON FILAS*/
- justify-content: center;
- align-items: center;
- flex-direction: row;
- gap: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    gap: 10px;
 }
 
-.cardAppend{
- width: 18rem;
- margin: 0 auto;
+.cardAppend {
+    width: 18rem;
+    margin: 0 auto;
 }
 
-.cardAppend .card{
-    background: linear-gradient(to bottom,#270d6b,#130059);
+.cardAppend .card {
+    background: linear-gradient(to bottom, #270d6b, #130059);
     color: white;
 }
+
 .bi-cart {
-    font-size: 2rem; /* Cambia el tamaño del ícono */
-    color: #007bff; /* Cambia el color del ícono */
+    font-size: 2rem;
+    color: wheat;
+    transition: transform 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
 }
 
+.bi-cart:hover {
+    transform: scale(1.2);
+    color: gold;
+    box-shadow: 0 4px 8px rgba(255, 215, 0, 0.5);
+}
 
+.bi-cart:active {
+    transform: scale(0.9);
+}
 
 .card .btn-primary.comprar {
     background-color: #3a1a7c;
     border: #3a1a7c;
-  }
-  
-
-
-
+}
