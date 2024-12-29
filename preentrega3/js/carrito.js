@@ -1,15 +1,15 @@
-// Cargo el carrito del localStorage
+// Cargar el carrito desde localStorage
 const cargarCarrito = () => {
   try {
     const data = localStorage.getItem("carritoLucas");
-    return data ? JSON.parse(data) : [];
+    return data ? JSON.parse(data) : []; // Retorna el carrito si existe, de lo contrario, un array vacío
   } catch (error) {
     console.error("Error al cargar el carrito desde localStorage:", error);
     return [];
   }
 };
 
-// Muestro los productos del carrito en la página
+// Mostrar los productos del carrito en la página
 function listarProductos(carrito) {
   try {
     const ticket = document.getElementById("ticket");
@@ -21,6 +21,7 @@ function listarProductos(carrito) {
       return;
     }
 
+    // Renderizar cada producto del carrito
     carrito.forEach(({ nombre, precio, cantidad }) => {
       const card = document.createElement("div");
       card.classList.add("cardAppend");
@@ -40,17 +41,18 @@ function listarProductos(carrito) {
   }
 }
 
-// Manejo de carrito
+// Manejar las acciones del carrito
 function manejarCarrito(carrito) {
   try {
     const vaciarCarrito = document.getElementById("vaciarCarrito");
     const botonComprar = document.getElementById("comprarCarrito");
 
+    // Vaciar el carrito
     vaciarCarrito.addEventListener("click", () => {
       try {
         if (carrito.length > 0) {
           localStorage.removeItem("carritoLucas");
-          carrito.length = 0; // Limpiamos el carrito
+          carrito.length = 0; // Limpiar el array del carrito
           listarProductos(carrito);
           Swal.fire({
             icon: "info",
@@ -67,6 +69,7 @@ function manejarCarrito(carrito) {
       }
     });
 
+    // Procesar la compra
     botonComprar.addEventListener("click", () => {
       try {
         if (carrito.length > 0) {
@@ -76,6 +79,11 @@ function manejarCarrito(carrito) {
             text: "Su pedido ha sido procesado exitosamente.",
             confirmButtonText: "Aceptar",
           });
+
+          // Vaciar el carrito después de la compra
+          localStorage.removeItem("carritoLucas");
+          carrito.length = 0;
+          listarProductos(carrito);
         } else {
           Swal.fire({
             icon: "warning",
@@ -93,14 +101,15 @@ function manejarCarrito(carrito) {
   }
 }
 
-// Evento principal
+// Inicializar la funcionalidad del carrito al cargar la página
 document.addEventListener("DOMContentLoaded", () => {
   try {
-    const carrito = cargarCarrito();
-    listarProductos(carrito);
-    manejarCarrito(carrito);
+    const carrito = cargarCarrito(); // Cargar el carrito desde localStorage
+    listarProductos(carrito); // Mostrar los productos en la página
+    manejarCarrito(carrito); // Configurar los botones para manejar el carrito
   } catch (error) {
     console.error("Error al inicializar la página:", error);
   }
 });
+
 

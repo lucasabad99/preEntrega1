@@ -1,0 +1,74 @@
+[
+    {
+      "id": 1,
+      "nombre": "Itachi",
+      "precio": 15000,
+      "cantidad": 15,
+      "img": "./assets/itachi.jpg"
+    },
+    {
+      "id": 2,
+      "nombre": "Naruto",
+      "precio": 15000,
+      "cantidad": 15,
+      "img": "./assets/naruto.webp"
+    },
+    {
+      "id": 3,
+      "nombre": "Jiraija",
+      "precio": 15000,
+      "cantidad": 15,
+      "img": "./assets/jiraija.jpg"
+    },
+    {
+      "id": 4,
+      "nombre": "Sunade",
+      "precio": 15000,
+      "cantidad": 15,
+      "img": "./assets/tsunade.jpeg"
+    },
+    {
+      "id": 5,
+      "nombre": "Asuma",
+      "precio": 15000,
+      "cantidad": 15,
+      "img": "./assets/asuma.jpeg"
+    },
+    {
+      "id": 6,
+      "nombre": "Kakashi",
+      "precio": 15000,
+      "cantidad": 15,
+      "img": "./assets/kakashi.jpeg"
+    },
+    {
+      "id": 7,
+      "nombre": "Obito",
+      "precio": 15000,
+      "cantidad": 15,
+      "img": "./assets/obito.jpg"
+    },
+    {
+      "id": 8,
+      "nombre": "Rin",
+      "precio": 15000,
+      "cantidad": 15,
+      "img": "./assets/rin.jpg"
+    },
+    {
+      "id": 9,
+      "nombre": "Guy sensei",
+      "precio": 15000,
+      "cantidad": 15,
+      "img": "./assets/guy-O.jpg"
+    },
+    {
+      "id": 10,
+      "nombre": "Rock lee",
+      "precio": 20000,
+      "cantidad": 20,
+      "img": "./assets/rocklee.jpeg"
+    }
+  ]
+  
+  
