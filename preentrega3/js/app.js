@@ -1,3 +1,5 @@
+let productosGlobal = []; // Variable global para almacenar los productos
+
 // Cargar productos desde el archivo JSON usando fetch
 const cargarProductos = async () => {
   try {
@@ -5,11 +7,11 @@ const cargarProductos = async () => {
     if (!response.ok) {
       throw new Error('Error al cargar los productos');
     }
-    const productos = await response.json(); // Convertimos la respuesta a JSON
-    return productos; // Retornamos los productos
+    productosGlobal = await response.json(); // Guardar los productos en la variable global
+    return productosGlobal; // Retornar los productos
   } catch (error) {
     console.error('Error al cargar el archivo JSON:', error);
-    return []; // Retornamos un array vacío en caso de error
+    return []; // Retornar un array vacío en caso de error
   }
 };
 
@@ -67,36 +69,40 @@ function agregarEventosCompra() {
         try {
           const idProducto = parseInt(e.target.dataset.id);
 
-          cargarProductos().then((productos) => {
-            const producto = productos.find((p) => p.id === idProducto);
-            if (producto && producto.cantidad > 0) {
-              let { cantidad, id, nombre, precio } = producto;
+          // Buscar el producto en productosGlobal
+          const producto = productosGlobal.find((p) => p.id === idProducto);
+          if (producto && producto.cantidad > 0) {
+            // Reducir el stock directamente en productosGlobal
+            producto.cantidad -= 1;
 
-              // Restamos del stock
-              cantidad -= 1;
-              const cantidadElement = document.querySelector(`.cantidad[data-id="${id}"]`);
-              cantidadElement.textContent = `Cantidad: ${cantidad}`;
+            // Actualizar el contador visual en el DOM
+            const cantidadElement = document.querySelector(`.cantidad[data-id="${producto.id}"]`);
+            if (cantidadElement) {
+              cantidadElement.textContent = `Cantidad: ${producto.cantidad}`;
+            }
 
-              // Actualizamos el producto original en el array del carrito
-              const productoEnCarrito = carrito.find((p) => p.id === id);
-              if (productoEnCarrito) {
-                // Incrementamos la cantidad del producto en el carrito
-                productoEnCarrito.cantidad += 1;
-              } else {
-                // Si no existe en el carrito, lo agregamos
-                carrito.push({ id, nombre, precio, cantidad: 1 });
-              }
-
-              // Guardamos el carrito actualizado
-              localStorage.setItem("carritoLucas", JSON.stringify(carrito));
+            // Actualizar el carrito
+            const productoEnCarrito = carrito.find((p) => p.id === producto.id);
+            if (productoEnCarrito) {
+              productoEnCarrito.cantidad += 1;
             } else {
-              Swal.fire({
-                icon: "error",
-                title: "Oops...",
-                text: "Stock agotado",
+              carrito.push({
+                id: producto.id,
+                nombre: producto.nombre,
+                precio: producto.precio,
+                cantidad: 1,
               });
             }
-          });
+
+            // Guardar el carrito actualizado en localStorage
+            localStorage.setItem("carritoLucas", JSON.stringify(carrito));
+          } else {
+            Swal.fire({
+              icon: "error",
+              title: "Oops...",
+              text: "Stock agotado",
+            });
+          }
         } catch (error) {
           console.error("Error procesando la compra:", error);
         }
@@ -108,57 +114,10 @@ function agregarEventosCompra() {
 }
 
 // Inicialización al cargar la página
-document.addEventListener("DOMContentLoaded", () => {
-  cardAppend(); // Renderiza las tarjetas al cargar la página
+document.addEventListener("DOMContentLoaded", async () => {
+  await cardAppend(); // Renderiza las tarjetas al cargar la página
 });
 
-
-
-
-
-
-
-
-
-
-
-   
-
-
-
-
-        
-
-
-
-
-
-
-
-
-
-
-   
-
-
-
-
-        
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-   
 
 
 
