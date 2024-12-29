@@ -13,103 +13,128 @@ const productos = [
   { id: 12, nombre: "Sapito", precio: 19000, cantidad: 15, img: "./assets/sapito.jpg" },
 ];
 
-//localStorage.removeItem("carritoLucas");
-//localStorage.removeItem("productosLucas");
-
 // Guardar productos en localStorage
 const guardarLocal = (clave, valor) => {
-  localStorage.setItem(clave, JSON.stringify(valor));
+  try {
+    localStorage.setItem(clave, JSON.stringify(valor));
+  } catch (error) {
+    console.error("Error guardando en localStorage:", error);
+  }
 };
 
 // Cargar productos del localStorage (si existen)
 const cargarProductos = () => {
-  const data = localStorage.getItem("productosLucas");
-  return data ? JSON.parse(data) : productos;
+  try {
+    const data = localStorage.getItem("productosLucas");
+    return data ? JSON.parse(data) : productos;
+  } catch (error) {
+    console.error("Error cargando productos del localStorage:", error);
+    return productos; // Devuelve el array original en caso de error
+  }
 };
 
 let productosGuardados = cargarProductos();
 
-function cardAppend(productos) { 
-  let contenedor = document.getElementById("contenedor");
-  contenedor.classList.add("tarjetasContador");
-  contenedor.innerHTML = ""; // Limpiar contenedor para evitar duplicados
+function cardAppend(productos) {
+  try {
+    let contenedor = document.getElementById("contenedor");
+    contenedor.classList.add("tarjetasContador");
+    contenedor.innerHTML = ""; // Limpiar contenedor para evitar duplicados
 
-  productos.forEach(({ nombre, precio, cantidad, id, img }) => { 
-    let card = document.createElement("div");
-    card.classList.add("cardAppend");
-    card.innerHTML = `
-      <div class="card">
-        <img src="${img}" class="card-img-top" alt="${nombre}">
-        <div class="card-body">
-          <h5 class="card-title">${nombre}</h5>
-          <p class="card-text">Precio: $${precio}</p>
-          <p class="card-text cantidad" data-id="${id}">Cantidad: ${cantidad}</p>
-          <button class="btn btn-primary comprar" data-id="${id}">Agregar al carrito</button>
+    productos.forEach(({ nombre, precio, cantidad, id, img }) => {
+      let card = document.createElement("div");
+      card.classList.add("cardAppend");
+      card.innerHTML = `
+        <div class="card">
+          <img src="${img}" class="card-img-top" alt="${nombre}">
+          <div class="card-body">
+            <h5 class="card-title">${nombre}</h5>
+            <p class="card-text">Precio: $${precio}</p>
+            <p class="card-text cantidad" data-id="${id}">Cantidad: ${cantidad}</p>
+            <button class="btn btn-primary comprar" data-id="${id}">Agregar al carrito</button>
+          </div>
         </div>
-      </div>
-    `;
-    contenedor.appendChild(card);
-  });
+      `;
+      contenedor.appendChild(card);
+    });
 
-  agregarEventosCompra(); // Función para agregar eventos a los botones
+    agregarEventosCompra(); // Función para agregar eventos a los botones
+  } catch (error) {
+    console.error("Error renderizando las tarjetas:", error);
+  }
 }
 
-// Creo array carrito, obtengo datos del localStorage y los guardo en el array
+// Crear array carrito, obtener datos del localStorage y guardarlos en el array
 let carrito = [];
 const cargarCarrito = () => {
-  const data = localStorage.getItem("carritoLucas");
-  return data ? JSON.parse(data) : [];
+  try {
+    const data = localStorage.getItem("carritoLucas");
+    return data ? JSON.parse(data) : [];
+  } catch (error) {
+    console.error("Error cargando carrito del localStorage:", error);
+    return [];
+  }
 };
 carrito = cargarCarrito();
 
 function agregarEventosCompra() {
-  const botones = document.querySelectorAll(".comprar");
+  try {
+    const botones = document.querySelectorAll(".comprar");
 
-  botones.forEach((boton) => {
-    boton.addEventListener("click", (e) => {
-      const idProducto = parseInt(e.target.dataset.id);
+    botones.forEach((boton) => {
+      boton.addEventListener("click", (e) => {
+        try {
+          const idProducto = parseInt(e.target.dataset.id);
 
-      // Usamos desestructuración al encontrar el producto
-      const producto = productosGuardados.find((p) => p.id === idProducto);
-      if (producto && producto.cantidad > 0) {
-        // Desestructuramos las propiedades necesarias
-        let { cantidad, id, nombre, precio } = producto;
+          const producto = productosGuardados.find((p) => p.id === idProducto);
+          if (producto && producto.cantidad > 0) {
+            let { cantidad, id, nombre, precio } = producto;
 
-        // Restamos del stock
-        cantidad -= 1;
-        const cantidadElement = document.querySelector(`.cantidad[data-id="${id}"]`);
-        cantidadElement.textContent = `Cantidad: ${cantidad}`;
+            // Restamos del stock
+            cantidad -= 1;
+            const cantidadElement = document.querySelector(`.cantidad[data-id="${id}"]`);
+            cantidadElement.textContent = `Cantidad: ${cantidad}`;
 
-        // Actualizamos el producto original en el array
-        producto.cantidad = cantidad;
-        guardarLocal("productosLucas", productosGuardados);
+            // Actualizamos el producto original en el array
+            producto.cantidad = cantidad;
+            guardarLocal("productosLucas", productosGuardados);
 
-        // Encontramos el producto en el carrito (si existe)
-        const productoEnCarrito = carrito.find((p) => p.id === id);
-        if (productoEnCarrito) {
-          // Incrementamos la cantidad del producto en el carrito
-          productoEnCarrito.cantidad += 1;
-        } else {
-          // Si no existe en el carrito, lo agregamos con desestructuración
-          carrito.push({ id, nombre, precio, cantidad: 1 });
+            // Encontramos el producto en el carrito (si existe)
+            const productoEnCarrito = carrito.find((p) => p.id === id);
+            if (productoEnCarrito) {
+              // Incrementamos la cantidad del producto en el carrito
+              productoEnCarrito.cantidad += 1;
+            } else {
+              // Si no existe en el carrito, lo agregamos
+              carrito.push({ id, nombre, precio, cantidad: 1 });
+            }
+
+            // Guardamos el carrito actualizado
+            guardarLocal("carritoLucas", carrito);
+          } else {
+            Swal.fire({
+              icon: "error",
+              title: "Oops...",
+              text: "Stock agotado",
+            });
+          }
+        } catch (error) {
+          console.error("Error procesando la compra:", error);
         }
-
-        // Guardamos el carrito actualizado
-        guardarLocal("carritoLucas", carrito);
-      } else {
-        // Reemplazamos el alert por SweetAlert
-        Swal.fire({
-          icon: 'error',
-          title: 'Oops...',
-          text: 'Stock agotado',
-        });
-      }
+      });
     });
-  });
+  } catch (error) {
+    console.error("Error agregando eventos a los botones:", error);
+  }
 }
 
 // Renderizar las tarjetas
-cardAppend(productosGuardados);
+try {
+  cardAppend(productosGuardados);
+} catch (error) {
+  console.error("Error inicializando el render de tarjetas:", error);
+}
+
 
 
 
