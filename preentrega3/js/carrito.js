@@ -15,16 +15,15 @@ function listarProductos(carrito) {
     return;
   }
 
-  // Creo tarjetas para los productos del carrito
   carrito.forEach(({ nombre, precio, cantidad }) => {
     const card = document.createElement("div");
     card.classList.add("cardAppend");
     card.innerHTML = `
       <div class="card">
         <div class="card-body">
-          <h5 class="card-title">${nombre}</h5> <!-- Usamos directamente 'nombre' -->
-          <p class="card-text">Precio: $${precio}</p> <!-- Usamos directamente 'precio' -->
-          <p class="card-text">Cantidad en carrito: ${cantidad}</p> <!-- Usamos directamente 'cantidad' -->
+          <h5 class="card-title">${nombre}</h5>
+          <p class="card-text">Precio: $${precio}</p>
+          <p class="card-text">Cantidad en carrito: ${cantidad}</p>
         </div>
       </div>
     `;
@@ -32,48 +31,50 @@ function listarProductos(carrito) {
   });
 }
 
+// Manejo de carrito
 function manejarCarrito(carrito) {
-  // Selección con desestructuración de propiedades relacionadas
-  const vaciarCarrito = document.querySelector("#botones button:first-child");
+  const vaciarCarrito = document.getElementById("vaciarCarrito");
+  const botonComprar = document.getElementById("comprarCarrito");
 
-  if (!vaciarCarrito) {
-    console.error("El botón 'Vaciar carrito' no se encontró."); // Mensaje de error si no se encuentra el botón
-    return;
-  }
-
-  // Evento para vaciar el carrito
   vaciarCarrito.addEventListener("click", () => {
     if (carrito.length > 0) {
-      // Limpiamos el carrito
       localStorage.removeItem("carritoLucas");
-      carrito.length = 0;
-
-      // Desestructuración si necesitamos trabajar con propiedades específicas
-      carrito.forEach(({ id, nombre }) => {
-        console.log(`Eliminado: ${nombre} (ID: ${id})`);
+      carrito.length = 0; // Limpiamos el carrito
+      listarProductos(carrito);
+      Swal.fire({
+        icon: 'info',
+        title: 'Carrito vacío',
+        text: 'El carrito se ha vaciado correctamente.',
+        confirmButtonText: 'Aceptar',
       });
-
-      listarProductos(carrito); // Actualizamos la lista
     } else {
       const ticket = document.getElementById("ticket");
-      ticket.innerHTML = "<p>El carrito ya está vacío.</p>";
+      ticket.innerHTML = "<p>El carrito está vacío.</p>";
     }
   });
 
   botonComprar.addEventListener("click", () => {
     if (carrito.length > 0) {
-      // Mostrar el SweetAlert de agradecimiento
       Swal.fire({
         icon: 'success',
         title: 'Gracias por su compra!',
         text: 'Su pedido ha sido procesado exitosamente.',
-        confirmButtonText: 'Aceptar'
+        confirmButtonText: 'Aceptar',
       });
+    } else {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Carrito vacío',
+        text: 'No hay productos para comprar.',
+        confirmButtonText: 'Aceptar',
+      });
+    }
+  });
 }
 
+// Evento principal
 document.addEventListener("DOMContentLoaded", () => {
   const carrito = cargarCarrito();
-  listarProductos(carrito); // Aquí es donde se carga y muestra el carrito
-  manejarCarrito(carrito); // Y aquí se manejan las acciones del carrito
+  listarProductos(carrito);
+  manejarCarrito(carrito);
 });
-

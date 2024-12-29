@@ -1,49 +1,49 @@
 const productos = [
-  { id: 1, nombre: "Itachi", precio: 15000, cantidad: 15 },
-  { id: 2, nombre: "Naruto", precio: 15000, cantidad: 15 },
-  { id: 3, nombre: "Jiraija", precio: 15000, cantidad: 15 },
-  { id: 4, nombre: "Sunade", precio: 15000, cantidad: 15 },
-  { id: 5, nombre: "Asuma", precio: 15000, cantidad: 15 },
-  { id: 6, nombre: "Kakashi", precio: 15000, cantidad: 15 },
-  { id: 7, nombre: "Obito", precio: 15000, cantidad: 15 },
-  { id: 8, nombre: "Rin", precio: 15000, cantidad: 15 },
-  { id: 9, nombre: "Guy sensei", precio: 15000, cantidad: 15 },
-  { id: 10, nombre: "Rock lee", precio: 20000, cantidad: 20 },
-  { id: 11, nombre: "Sabuza", precio: 19000, cantidad: 15 },
-  { id: 12, nombre: "Sapito", precio: 19000, cantidad: 15 },
+  { id: 1, nombre: "Itachi", precio: 15000, cantidad: 15, img: "./assets/itachi.jpg" },
+  { id: 2, nombre: "Naruto", precio: 15000, cantidad: 15, img: "./assets/naruto.jpg" },
+  { id: 3, nombre: "Jiraija", precio: 15000, cantidad: 15, img: "./assets/jiraija.jpg" },
+  { id: 4, nombre: "Sunade", precio: 15000, cantidad: 15, img: "./assets/sunade.jpg" },
+  { id: 5, nombre: "Asuma", precio: 15000, cantidad: 15, img: "./assets/asuma.jpg" },
+  { id: 6, nombre: "Kakashi", precio: 15000, cantidad: 15, img: "./assets/kakashi.jpg" },
+  { id: 7, nombre: "Obito", precio: 15000, cantidad: 15, img: "./assets/obito.jpg" },
+  { id: 8, nombre: "Rin", precio: 15000, cantidad: 15, img: "./assets/rin.jpg" },
+  { id: 9, nombre: "Guy sensei", precio: 15000, cantidad: 15, img: "./assets/guy_sensei.jpg" },
+  { id: 10, nombre: "Rock lee", precio: 20000, cantidad: 20, img: "./assets/rock_lee.jpg" },
+  { id: 11, nombre: "Sabuza", precio: 19000, cantidad: 15, img: "./assets/sabuza.jpg" },
+  { id: 12, nombre: "Sapito", precio: 19000, cantidad: 15, img: "./assets/sapito.jpg" },
 ];
+
 //localStorage.removeItem("carritoLucas");
 //localStorage.removeItem("productosLucas");
+
 // Guardar productos en localStorage
 const guardarLocal = (clave, valor) => {
   localStorage.setItem(clave, JSON.stringify(valor));
 };
+
 // Cargar productos del localStorage (si existen)
 const cargarProductos = () => {
   const data = localStorage.getItem("productosLucas");
   return data ? JSON.parse(data) : productos;
 };
+
 let productosGuardados = cargarProductos();
-
-
-
 
 function cardAppend(productos) { 
   let contenedor = document.getElementById("contenedor");
   contenedor.classList.add("tarjetasContador");
   contenedor.innerHTML = ""; // Limpiar contenedor para evitar duplicados
 
-  // Iteramos sobre cada elemento del arreglo 'productos' y desestructuramos las propiedades directamente
-  productos.forEach(({ nombre, precio, cantidad, id }) => { 
-    // Ahora 'nombre', 'precio', 'cantidad' e 'id' son variables individuales
+  productos.forEach(({ nombre, precio, cantidad, id, img }) => { 
     let card = document.createElement("div");
     card.classList.add("cardAppend");
     card.innerHTML = `
       <div class="card">
+        <img src="${img}" class="card-img-top" alt="${nombre}">
         <div class="card-body">
-          <h5 class="card-title">${nombre}</h5> <!-- Usamos directamente 'nombre' -->
-          <p class="card-text">Precio: $${precio}</p> <!-- Usamos directamente 'precio' -->
-          <p class="card-text cantidad" data-id="${id}">Cantidad: ${cantidad}</p> <!-- Usamos directamente 'cantidad' -->
+          <h5 class="card-title">${nombre}</h5>
+          <p class="card-text">Precio: $${precio}</p>
+          <p class="card-text cantidad" data-id="${id}">Cantidad: ${cantidad}</p>
           <button class="btn btn-primary comprar" data-id="${id}">Agregar al carrito</button>
         </div>
       </div>
@@ -54,11 +54,6 @@ function cardAppend(productos) {
   agregarEventosCompra(); // Función para agregar eventos a los botones
 }
 
-
-
-
-
-
 // Creo array carrito, obtengo datos del localStorage y los guardo en el array
 let carrito = [];
 const cargarCarrito = () => {
@@ -66,10 +61,6 @@ const cargarCarrito = () => {
   return data ? JSON.parse(data) : [];
 };
 carrito = cargarCarrito();
-
-
-
-
 
 function agregarEventosCompra() {
   const botones = document.querySelectorAll(".comprar");
@@ -117,9 +108,45 @@ function agregarEventosCompra() {
   });
 }
 
-
 // Renderizar las tarjetas
 cardAppend(productosGuardados);
+
+
+
+
+
+
+
+
+
+   
+
+
+
+
+        
+
+
+
+
+
+
+
+
+
+
+   
+
+
+
+
+        
+
+
+
+
+
+
 
 
 
